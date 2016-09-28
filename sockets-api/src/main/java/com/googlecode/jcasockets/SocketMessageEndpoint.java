@@ -15,7 +15,6 @@
  */
 package com.googlecode.jcasockets;
 
-
 public interface SocketMessageEndpoint {
-	public void onMessage(SocketMessage socketMessage) throws Exception;
+	void onMessage(SocketMessage socketMessage) throws Exception;
 }

@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
    <groupId>com.googlecode.jcasockets</groupId>
    <artifactId>sockets-rar</artifactId>
@@ -7,35 +8,107 @@
    <parent>
       <groupId>com.googlecode</groupId>
       <artifactId>jcasockets</artifactId>
-      <version>1.2.4-SNAPSHOT</version>
+      <version>2.0.0-SNAPSHOT</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
-   <dependencies>
-       <dependency>
-         <groupId>com.googlecode.jcasockets</groupId>
-         <artifactId>sockets-api</artifactId>
-         <version>${project.version}</version>
-       </dependency>
-       <dependency>
-         <groupId>com.googlecode.jcasockets</groupId>
-         <artifactId>sockets-jar</artifactId>
-         <version>${project.version}</version>
-       </dependency>
-   </dependencies>
    <build>
       <plugins>
          <plugin>
-            <artifactId>maven-rar-plugin</artifactId>
-            <version>2.2</version>
-            <configuration>
-               <archive>
-                  <addMavenDescriptor>false</addMavenDescriptor>
-               </archive><!-- 
-               <rarSourceDirectory>target/classes</rarSourceDirectory>
-               --><includeJar>true</includeJar>
-            </configuration>
+            <artifactId>maven-jar-plugin</artifactId>
+            <executions>
+               <!-- the jar needs to be in place before the rar plugin runs, -->
+               <!-- so the rar plugin could package it into the archive.     -->
+               <execution>
+                  <goals>
+                     <goal>jar</goal>
+                  </goals>
+                  <phase>prepare-package</phase>
+               </execution>
+            </executions>
          </plugin>
-      </plugins>
-      <finalName>sockets-rar-${project.version}</finalName>
+         <plugin>
+            <artifactId>maven-rar-plugin</artifactId>
+         </plugin>
+         <plugin>
+            <groupId>org.jboss.ironjacamar</groupId>
+            <artifactId>ironjacamar-validator-maven</artifactId>
+               <executions>
+                  <execution>
+                     <goals>
+                        <goal>validate</goal>
+                     </goals>
+                  </execution>
+               </executions>
+               <configuration>
+                  <outputDir>.</outputDir>
+                  <rarFile>${project.build.directory}/${project.build.finalName}</rarFile>
+               </configuration>
+           </plugin>
+       </plugins>
    </build>
+   <dependencies>
+      <dependency>
+          <groupId>com.googlecode.jcasockets</groupId>
+          <artifactId>sockets-api</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>org.jboss.spec.javax.resource</groupId>
+          <artifactId>jboss-connector-api_1.6_spec</artifactId>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>javax.validation</groupId>
+          <artifactId>validation-api</artifactId>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.jboss.arquillian.junit</groupId>
+          <artifactId>arquillian-junit-core</artifactId>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.jboss.arquillian.junit</groupId>
+          <artifactId>arquillian-junit-container</artifactId>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.unitils</groupId>
+          <artifactId>unitils-inject</artifactId>
+          <version>3.1</version>
+           <scope>test</scope>
+       </dependency>
+       <dependency>
+           <groupId>org.unitils</groupId>
+           <artifactId>unitils-mock</artifactId>
+           <version>3.1</version>
+           <scope>test</scope>
+       </dependency>
+       <dependency>
+           <groupId>org.jboss.shrinkwrap</groupId>
+           <artifactId>shrinkwrap-api</artifactId>
+           <scope>test</scope>
+       </dependency>
+       <dependency>
+           <groupId>org.jboss.arquillian.container</groupId>
+           <artifactId>arquillian-container-spi</artifactId>
+           <scope>test</scope>
+       </dependency>
+       <dependency>
+           <groupId>org.jboss.ironjacamar</groupId>
+           <artifactId>ironjacamar-arquillian-embedded</artifactId>
+           <scope>test</scope>
+       </dependency>
+       <!-- Actually only needed for Arquillian test -->
+       <dependency>
+           <groupId>org.jboss.logging</groupId>
+           <artifactId>jboss-logging</artifactId>
+           <version>3.3.0.Final</version>
+           <scope>provided</scope>
+       </dependency>
+   </dependencies>
 </project>
