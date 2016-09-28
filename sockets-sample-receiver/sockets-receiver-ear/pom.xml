@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.googlecode.jcasockets</groupId>
+        <artifactId>sockets-sample-receiver</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>sockets-receiver-ear</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <packaging>ear</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-ear-plugin</artifactId>
+                <configuration>
+                    <version>6</version>
+                    <defaultLibBundleDir>lib/</defaultLibBundleDir>
+                    <initializeInOrder>true</initializeInOrder>
+                    <modules>
+                        <rarModule>
+                            <groupId>com.googlecode.jcasockets</groupId>
+                            <artifactId>sockets-rar</artifactId>
+                        </rarModule>
+                        <ejbModule>
+                            <groupId>com.googlecode.jcasockets</groupId>
+                            <artifactId>sockets-ejb</artifactId>
+                        </ejbModule>
+                    </modules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.googlecode.jcasockets</groupId>
+            <artifactId>sockets-ejb</artifactId>
+            <type>ejb</type>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.jcasockets</groupId>
+            <artifactId>sockets-rar</artifactId>
+            <type>rar</type>
+        </dependency>
+    </dependencies>
+
+</project>
